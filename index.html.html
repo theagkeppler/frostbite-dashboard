@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reorder batch summary</title>
+<style>
+  :root {
+    --bg: #faf9f7; --surface: #ffffff; --ink: #16181d; --ink2: #52514e; --muted: #7d7b75;
+    --line: #e3e1da; --axis: #bdbbb2;
+    --reorder: #d9622b; --reorder-bg: #fdeee5; --reorder-ink: #7a2e0b;
+    --hold: #2a78d6; --hold-bg: #e8f1fc; --hold-ink: #0c447c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161615; --surface: #1f1f1d; --ink: #f0efec; --ink2: #c3c2b7; --muted: #96948c;
+      --line: #33332f; --axis: #55544e;
+      --reorder: #e8763f; --reorder-bg: #3a2216; --reorder-ink: #ffc9ad;
+      --hold: #4a93e8; --hold-bg: #172a40; --hold-ink: #bcd9fa;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 40px 16px 56px; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0 0 6px; font-weight: 650; }
+  h2 { font-size: 16px; margin: 0 0 4px; font-weight: 650; }
+  p { margin: 0; }
+  .lead { color: var(--ink2); margin-bottom: 28px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 640px; }
+  th, td { padding: 12px 10px; text-align: left; white-space: nowrap; }
+  thead th { font-size: 13px; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); }
+  tbody tr + tr > * { border-top: 2px solid var(--surface); }
+  tbody th { font-weight: 650; }
+  .num { text-align: right; }
+  .strong { font-weight: 650; }
+  tr.reorder { background: var(--reorder-bg); }
+  tr.hold { background: var(--hold-bg); }
+  .badge { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.03em;
+           padding: 3px 10px; border-radius: 999px; border: 1.5px solid currentColor; }
+  tr.reorder .badge { color: var(--reorder-ink); }
+  tr.hold .badge { color: var(--hold-ink); }
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--ink2); margin: 28px 0 12px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; }
+  .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+  .charts .card { min-width: 0; }
+  .charts p { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  svg { width: 100%; height: auto; display: block; }
+  svg text { font-family: inherit; }
+  .grid { stroke: var(--line); stroke-width: 1; }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+  .tick, .sub { fill: var(--muted); font-size: 12px; }
+  .cat { fill: var(--ink); font-size: 13px; font-weight: 600; }
+  .val { fill: var(--ink); font-size: 13px; font-weight: 650; }
+  .bar-reorder { fill: var(--reorder); }
+  .bar-hold { fill: var(--hold); }
+  .ref { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 6 4; }
+  .reflabel { fill: var(--ink2); font-size: 12px; }
+  footer { margin-top: 28px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Reorder batch summary</h1>
+  <p class="lead">2 of 3 rounds need a reorder, for a total order of 2,258 units. A round reorders when supply is at or below 4 weeks (3 lead time + 1 safety).</p>
+
+  <div class="card table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Round</th><th scope="col">Month</th>
+          <th scope="col" class="num">Forecast (units)</th><th scope="col" class="num">Inventory (units)</th>
+          <th scope="col" class="num">Weekly demand</th><th scope="col" class="num">Weeks of supply</th>
+          <th scope="col">Decision</th><th scope="col" class="num">Order quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr class='hold'><th scope='row'>Round A</th><td>July</td><td class='num'>1,544</td><td class='num'>1,450</td><td class='num'>356.58</td><td class='num'>4.07</td><td><span class='badge'>HOLD</span></td><td class='num strong'>0</td></tr>
+<tr class='reorder'><th scope='row'>Round B</th><td>October</td><td class='num'>1,046</td><td class='num'>700</td><td class='num'>241.57</td><td class='num'>2.90</td><td><span class='badge'>REORDER NOW</span></td><td class='num strong'>1,233</td></tr>
+<tr class='reorder'><th scope='row'>Round C</th><td>January</td><td class='num'>890</td><td class='num'>620</td><td class='num'>205.54</td><td class='num'>3.02</td><td><span class='badge'>REORDER NOW</span></td><td class='num strong'>1,025</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <span><i class="swatch" style="background: var(--reorder)"></i>Reorder now</span>
+    <span><i class="swatch" style="background: var(--hold)"></i>Hold</span>
+  </div>
+
+  <div class="charts">
+    <div class="card">
+      <h2>Weeks of supply by round</h2>
+      <p>Weeks on hand, against the 4-week reorder threshold</p>
+      <svg viewBox='0 0 440 264' role='img' aria-label='Bar chart of weeks of supply for each round against the reorder threshold'><line class='axis' x1='52' x2='428' y1='216' y2='216'/><text class='tick' x='44' y='216' dy='4' text-anchor='end'>0</text><line class='grid' x1='52' x2='428' y1='178.4' y2='178.4'/><text class='tick' x='44' y='178.4' dy='4' text-anchor='end'>1</text><line class='grid' x1='52' x2='428' y1='140.8' y2='140.8'/><text class='tick' x='44' y='140.8' dy='4' text-anchor='end'>2</text><line class='grid' x1='52' x2='428' y1='103.2' y2='103.2'/><text class='tick' x='44' y='103.2' dy='4' text-anchor='end'>3</text><line class='grid' x1='52' x2='428' y1='65.6' y2='65.6'/><text class='tick' x='44' y='65.6' dy='4' text-anchor='end'>4</text><line class='grid' x1='52' x2='428' y1='28' y2='28'/><text class='tick' x='44' y='28' dy='4' text-anchor='end'>5</text><path class='bar-hold' d='M92.7,216 V67.1 Q92.7,63.1 96.7,63.1 H132.7 Q136.7,63.1 136.7,67.1 V216 Z'><title>Round A: 4.07</title></path><text class='val' x='114.7' y='56.1' text-anchor='middle'>4.07</text><text class='cat' x='114.7' y='236' text-anchor='middle'>Round A</text><text class='sub' x='114.7' y='253' text-anchor='middle'>July</text><path class='bar-reorder' d='M218,216 V111 Q218,107 222,107 H258 Q262,107 262,111 V216 Z'><title>Round B: 2.90</title></path><text class='val' x='240' y='100' text-anchor='middle'>2.90</text><text class='cat' x='240' y='236' text-anchor='middle'>Round B</text><text class='sub' x='240' y='253' text-anchor='middle'>October</text><path class='bar-reorder' d='M343.3,216 V106.6 Q343.3,102.6 347.3,102.6 H383.3 Q387.3,102.6 387.3,106.6 V216 Z'><title>Round C: 3.02</title></path><text class='val' x='365.3' y='95.6' text-anchor='middle'>3.02</text><text class='cat' x='365.3' y='236' text-anchor='middle'>Round C</text><text class='sub' x='365.3' y='253' text-anchor='middle'>January</text><line class='ref' x1='52' x2='428' y1='65.6' y2='65.6'/><text class='reflabel' x='428' y='65.6' dy='-6' text-anchor='end'>4-week threshold</text></svg>
+    </div>
+    <div class="card">
+      <h2>Order quantity by round</h2>
+      <p>Units to order to restock to 8 weeks of supply</p>
+      <svg viewBox='0 0 440 264' role='img' aria-label='Bar chart of order quantity for each round'><line class='axis' x1='52' x2='428' y1='216' y2='216'/><text class='tick' x='44' y='216' dy='4' text-anchor='end'>0</text><line class='grid' x1='52' x2='428' y1='178.4' y2='178.4'/><text class='tick' x='44' y='178.4' dy='4' text-anchor='end'>250</text><line class='grid' x1='52' x2='428' y1='140.8' y2='140.8'/><text class='tick' x='44' y='140.8' dy='4' text-anchor='end'>500</text><line class='grid' x1='52' x2='428' y1='103.2' y2='103.2'/><text class='tick' x='44' y='103.2' dy='4' text-anchor='end'>750</text><line class='grid' x1='52' x2='428' y1='65.6' y2='65.6'/><text class='tick' x='44' y='65.6' dy='4' text-anchor='end'>1,000</text><line class='grid' x1='52' x2='428' y1='28' y2='28'/><text class='tick' x='44' y='28' dy='4' text-anchor='end'>1,250</text><text class='val' x='114.7' y='209' text-anchor='middle'>0</text><text class='cat' x='114.7' y='236' text-anchor='middle'>Round A</text><text class='sub' x='114.7' y='253' text-anchor='middle'>July</text><path class='bar-reorder' d='M218,216 V34.6 Q218,30.6 222,30.6 H258 Q262,30.6 262,34.6 V216 Z'><title>Round B: 1,233</title></path><text class='val' x='240' y='23.6' text-anchor='middle'>1,233</text><text class='cat' x='240' y='236' text-anchor='middle'>Round B</text><text class='sub' x='240' y='253' text-anchor='middle'>October</text><path class='bar-reorder' d='M343.3,216 V65.8 Q343.3,61.8 347.3,61.8 H383.3 Q387.3,61.8 387.3,65.8 V216 Z'><title>Round C: 1,025</title></path><text class='val' x='365.3' y='54.8' text-anchor='middle'>1,025</text><text class='cat' x='365.3' y='236' text-anchor='middle'>Round C</text><text class='sub' x='365.3' y='253' text-anchor='middle'>January</text></svg>
+    </div>
+  </div>
+
+  <footer>Generated by reorder_tool.ps1 -Batch on 2026-10-11 22:48 from round_a.txt, round_b.txt, round_c.txt. Weekly demand = forecast / 4.33.</footer>
+</main>
+</body>
+</html>
